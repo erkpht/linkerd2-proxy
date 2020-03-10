@@ -164,6 +164,7 @@ impl<A: OrigDstAddr> Config<A> {
                     }))
                     .push(observability.clone())
                     .push(identity_headers.clone())
+                    .push(http::overwrite_authority::layer(endpoint::FromMetadata))
                     // Ensures that the request's URI is in the proper form.
                     .push(http::normalize_uri::layer())
                     // Upgrades HTTP/1 requests to be transported over HTTP/2 connections.
