@@ -140,9 +140,9 @@ where
                 let h1 = hyper::Client::builder()
                     .executor(exec)
                     .keep_alive(keep_alive)
-                    // hyper derives the host from the authority, only in cases
-                    // where an authority overwrite was performed
-                    .set_host(target.abs_form())
+                    // hyper should never try to automatically set the Host
+                    // header, instead always just passing whatever we received.
+                    .set_host(false)
                     .build(HyperConnect::new(connect, target, abs_from));
                 MakeFuture::Http1(Some(h1))
             }

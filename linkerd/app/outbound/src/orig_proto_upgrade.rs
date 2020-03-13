@@ -1,3 +1,4 @@
+use crate::proxy::http::overwrite_authority::ForceAbsForm;
 use crate::proxy::http::{orig_proto, settings::Settings};
 use crate::svc::stack;
 use crate::{HttpEndpoint, Target};
@@ -47,16 +48,21 @@ where
             return Either::B(self.inner.new_service(endpoint));
         }
 
-        let was_absolute = endpoint.inner.settings.was_absolute_form();
+        let abs_form = if endpoint.abs_form() {
+            true
+        } else {
+            endpoint.inner.settings.was_absolute_form()
+        };
+
         trace!(
             header = %orig_proto::L5D_ORIG_PROTO,
-            was_absolute,
+            abs_form,
             "Endpoint supports transparent HTTP/2 upgrades",
         );
         endpoint.inner.settings = Settings::Http2;
 
         let inner = self.inner.new_service(endpoint);
-        Either::A(orig_proto::Upgrade::new(inner, was_absolute))
+        Either::A(orig_proto::Upgrade::new(inner, abs_form))
     }
 }
 
@@ -75,11 +81,16 @@ where
     fn call(&mut self, mut endpoint: Target<HttpEndpoint>) -> Self::Future {
         let can_upgrade = endpoint.inner.can_use_orig_proto();
 
-        let was_absolute = endpoint.inner.settings.was_absolute_form();
+        let abs_form = if endpoint.abs_form() {
+            true
+        } else {
+            endpoint.inner.settings.was_absolute_form()
+        };
+
         if can_upgrade {
             trace!(
                 header = %orig_proto::L5D_ORIG_PROTO,
-                %was_absolute,
+                %abs_form,
                 "Endpoint supports transparent HTTP/2 upgrades",
             );
             endpoint.inner.settings = Settings::Http2;
@@ -89,7 +100,7 @@ where
         UpgradeFuture {
             can_upgrade,
             inner,
-            was_absolute,
+            was_absolute: abs_form,
         }
     }
 }
