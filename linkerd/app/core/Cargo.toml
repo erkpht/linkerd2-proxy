@@ -65,7 +65,7 @@ tokio = "0.1.14"
 tokio-timer = "0.2"
 tower = "0.1"
 tower-balance = { git = "https://github.com/tower-rs/tower" }
-tower-load = { git = "https://github.com/tower-rs/tower" }
+tower-load = { path ="../../../../tower/tower-load" }
 tower-request-modifier = { git = "https://github.com/tower-rs/tower-http" }
 tower-spawn-ready = { git = "https://github.com/tower-rs/tower" }
 tower-grpc = { version = "0.1", default-features = false, features = ["protobuf"] }

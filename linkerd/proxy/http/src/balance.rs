@@ -6,7 +6,7 @@ use rand::{rngs::SmallRng, SeedableRng};
 use std::{marker::PhantomData, time::Duration};
 pub use tower_balance::p2c::Balance;
 use tower_discover::Discover;
-pub use tower_load::{Load, PeakEwmaDiscover};
+pub use tower_load::{Load, PeakEwmaDiscover, Constant,PendingRequestsDiscover};
 
 /// Configures a stack to resolve `T` typed targets to balance requests over
 /// `M`-typed endpoint stacks.
@@ -47,14 +47,14 @@ where
     D: Discover<Service = S>,
     S: tower::Service<http::Request<A>, Response = http::Response<B>>,
     S::Error: Into<Error>,
-    Balance<PeakEwmaDiscover<D, PendingUntilFirstData>, http::Request<A>>:
+    Balance<PendingRequestsDiscover<D, PendingUntilFirstData>, http::Request<A>>:
         tower::Service<http::Request<A>>,
 {
-    type Service = Balance<PeakEwmaDiscover<D, PendingUntilFirstData>, http::Request<A>>;
+    type Service = Balance<PendingRequestsDiscover<D, PendingUntilFirstData>, http::Request<A>>;
 
     fn layer(&self, discover: D) -> Self::Service {
         let instrument = PendingUntilFirstData::default();
-        let loaded = PeakEwmaDiscover::new(discover, self.default_rtt, self.decay, instrument);
+        let loaded = PendingRequestsDiscover::new(discover, instrument);
         Balance::new(loaded, self.rng.clone())
     }
 }

@@ -34,9 +34,9 @@ tokio = "0.1"
 tokio-connect = { git = "https://github.com/carllerche/tokio-connect" }
 tokio-timer = "0.2"   # for tokio_timer::clock
 tower = "0.1"
-tower-balance = { git = "https://github.com/tower-rs/tower" }
+tower-balance = { path ="../../../../tower/tower-balance" }
 tower-discover = "0.1"
-tower-load = { git = "https://github.com/tower-rs/tower" }
+tower-load = { path ="../../../../tower/tower-load" }
 tower-grpc = { version = "0.1", default-features = false, features = ["protobuf"] }
 tower-util = "0.1"
 tracing = "0.1.9"

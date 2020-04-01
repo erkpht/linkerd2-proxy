@@ -464,7 +464,7 @@ dependencies = [
  "futures",
  "http",
  "hyper",
- "tower-load",
+ "tower-load 0.1.0",
  "tower-service",
 ]
 
@@ -670,9 +670,9 @@ dependencies = [
  "tokio",
  "tokio-timer",
  "tower",
- "tower-balance",
+ "tower-balance 0.1.0 (git+https://github.com/tower-rs/tower)",
  "tower-grpc",
- "tower-load",
+ "tower-load 0.1.0",
  "tower-request-modifier",
  "tower-spawn-ready",
  "tracing",
@@ -1099,10 +1099,10 @@ dependencies = [
  "tokio-connect",
  "tokio-timer",
  "tower",
- "tower-balance",
+ "tower-balance 0.1.0",
  "tower-discover",
  "tower-grpc",
- "tower-load",
+ "tower-load 0.1.0",
  "tower-util",
  "tracing",
  "tracing-futures",
@@ -2447,8 +2447,27 @@ dependencies = [
  "tokio-timer",
  "tower-discover",
  "tower-layer",
- "tower-load",
- "tower-ready-cache",
+ "tower-load 0.1.0 (git+https://github.com/tower-rs/tower)",
+ "tower-ready-cache 0.1.0 (git+https://github.com/tower-rs/tower)",
+ "tower-service",
+ "tower-util",
+ "tracing",
+]
+
+[[package]]
+name = "tower-balance"
+version = "0.1.0"
+dependencies = [
+ "futures",
+ "indexmap",
+ "rand 0.7.2",
+ "slab",
+ "tokio-sync",
+ "tokio-timer",
+ "tower-discover",
+ "tower-layer",
+ "tower-load 0.1.0",
+ "tower-ready-cache 0.1.0",
  "tower-service",
  "tower-util",
  "tracing",
@@ -2544,6 +2563,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "tower-load"
+version = "0.1.0"
+dependencies = [
+ "futures",
+ "log",
+ "tokio-timer",
+ "tower-discover",
+ "tower-service",
+]
+
+[[package]]
 name = "tower-load-shed"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2558,6 +2588,18 @@ dependencies = [
 name = "tower-ready-cache"
 version = "0.1.0"
 source = "git+https://github.com/tower-rs/tower#7e55b7fa0b2db4ff36fd90f3700bd628c89951b6"
+dependencies = [
+ "futures",
+ "indexmap",
+ "log",
+ "tokio-sync",
+ "tower-service",
+ "tower-util",
+]
+
+[[package]]
+name = "tower-ready-cache"
+version = "0.1.0"
 dependencies = [
  "futures",
  "indexmap",

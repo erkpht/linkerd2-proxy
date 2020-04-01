@@ -15,7 +15,14 @@ ARG PROXY_UNOPTIMIZED
 ## Builds the proxy as incrementally as possible.
 FROM $RUST_IMAGE as build
 
+ADD tower.tar.gz  /tower
+RUN cp -rf /tower/home/land/application-aware-load-balancing-istio/linkerd-dev/tower /usr/src/tower
+RUN pwd
+RUN ls /usr/src/tower
+
 WORKDIR /usr/src/linkerd2-proxy
+
+
 
 COPY . .
 RUN cargo fetch --locked
